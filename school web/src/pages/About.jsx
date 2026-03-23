@@ -20,13 +20,13 @@ function About() {
       <section className="about-vision scroll-fade">
         <h1>Our Vision</h1>
         <p>
-          Giakanja Boys Secondary School is a distinguished educational facility
+          South Tetu Girl's High School is a distinguished educational facility
           situated in Nyeri county, Kenya. Since its inception, the school has
           been committed to delivering exceptional educational experiences that
           foster well-rounded development among students.
         </p>
         <p>
-          Founded in 1962, Giakanja Boys started with a mission to provide
+          Founded in 1962, South Tetu Girl's started with a mission to provide
           quality education tailored to the needs of young men. Its establishment
           was driven by the desire to empower students through education. Over
           the years, we have proudly served a diverse student body, guiding and
@@ -185,7 +185,7 @@ function About() {
             />
             <h3>Integrity</h3>
             <p>
-              In Giakanja Boys we instill integrity one child at a time. Every
+              In South Tetu Girl's we instill integrity one child at a time. Every
               student is equipped with values that drive integrity.
             </p>
           </div>

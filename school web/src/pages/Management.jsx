@@ -15,7 +15,7 @@ function SchoolManagement() {
       <section className="management-section">
         <h2>School Management</h2>
         <p className="intro">
-          Giakanja Boys High School is guided by a strong leadership team that
+          South Tetu Girl's High School is guided by a strong leadership team that
           works tirelessly to ensure academic excellence, discipline, and
           holistic growth of all students.
         </p>
@@ -23,7 +23,7 @@ function SchoolManagement() {
         {/* Board of Management */}
         <div className="management-card">
           <img
-            src="/images/senior.jpeg"
+            src="/images/principal south.png"
             alt="Board of Management Chair"
             className="management-image"
           />
@@ -31,7 +31,7 @@ function SchoolManagement() {
           <p>
             Led by <strong>Mr. [Insert BOM Chair’s Name]</strong>, this
             dedicated team provides strategic direction and support. The board
-            has remained the backbone of Giakanja Boys, ensuring resources,
+            has remained the backbone of South Tetu Girl's, ensuring resources,
             policies, and structures are in place to nurture success.
           </p>
         </div>
@@ -39,7 +39,7 @@ function SchoolManagement() {
         {/* Parent Teacher Association */}
         <div className="management-card">
           <img
-            src="/images/principal.jpeg"
+            src="/images/principal south.png"
             alt="Parent Teacher Association Chair"
             className="management-image"
           />
@@ -47,7 +47,7 @@ function SchoolManagement() {
           <p>
             Under the leadership of <strong>Prof. [Insert PTA Chair’s Name]</strong>, 
             the PTA unites parents and teachers to collaborate in shaping the
-            future of Giakanja Boys. Together, they strengthen the school’s
+            future of South Tetu Girl's. Together, they strengthen the school’s
             academic and co-curricular programs for the benefit of every
             student.
           </p>
@@ -57,14 +57,14 @@ function SchoolManagement() {
         {/* School Administration */}
         <div className="management-card">
           <img
-            src="/images/chair.jpeg"
+            src="/images/principal south.png"
             alt="Principal"
             className="management-image"
           />
           <h3>The School Administration</h3>
           <p>
             Led by the <strong>Principal, Mr. [Insert Principal’s Name]</strong>,
-            the administration forms the heart of Giakanja Boys. It is supported
+            the administration forms the heart of South Tetu Girl's. It is supported
             by the “Pentagon,” which consists of Deputy Principals and Senior
             Masters (Routine, Welfare, and Services). Their teamwork ensures
             discipline, smooth operations, and academic excellence.

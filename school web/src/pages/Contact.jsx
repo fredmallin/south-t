@@ -53,8 +53,8 @@ function Contact() {
       <section className="contact-section">
         <div className="contact-info">
           <p>Email: <a href="mailto:admin@southtetugirls.ac.ke">admin@southtetugirls.ac.ke</a></p>
-          <p>Phone: <a href="tel:0201234567">020-1234567</a></p>
-          <p>Address: Nyeri-Othaya Road, Nyeri County, Kenya</p>
+          <p>Phone: <a href="tel:0799052938">0799052938</a></p>
+          <p>Address: Mukurwe-ini Murang'a road, Nyeri County, Kenya</p>
         </div>
 
         <div className="contact-form">
