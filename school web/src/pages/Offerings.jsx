@@ -57,13 +57,13 @@ function Offerings() {
 
       <section className="testimonial">
         <p>
-          "Giakanja Boys has transformed my child's confidence and academic skills, preparing them for a bright future. We couldn’t be happier with our choice!"
+          "South Tetu Girl's has transformed my child's confidence and academic skills, preparing them for a bright future. We couldn’t be happier with our choice!"
         </p>
         <p>- Mary Johnson</p>
       </section>
 
       <section className="why-choose">
-        <h2>Why Choose Giakanja Boys?</h2>
+        <h2>Why Choose South Tetu Girl's?</h2>
         <div className="why-cards">
           {whyChoose.map((item, index) => (
             <div key={index} className="why-card">

@@ -110,7 +110,7 @@ body {
     top: 100%;           
     left: 0;
     width: 100%;         
-    background-color: #0f6d0f;
+    background-color: #744914;
     border-radius: 0 0 8px 8px;
     padding: 10px 0;
     z-index: 999;        
@@ -481,7 +481,7 @@ body {
 
 
 .join-us {
-  background: url('/images/join-us.jpeg') center/cover no-repeat;
+  background: url('/images/south home.png') center/cover no-repeat;
   height: 100svh;
   display: flex;
   flex-direction: column;
@@ -552,7 +552,7 @@ body {
 /* ===== Hero Section ===== */
 .hero.about-hero {
   position: relative; 
-  background: url("/images/ about.jpeg") center/cover no-repeat;
+  background: url("/images/south home.png") center/cover no-repeat;
   color: #fff;
   text-align: center;
   height: 100svh; 
@@ -844,7 +844,7 @@ body {
   }
 }
 .hero.gallery-hero {
-  background: url("/images/gallery.jpeg") center/cover no-repeat;
+  background: url("/images/south home.png") center/cover no-repeat;
  height: 70svh; 
   width: 100%;
   display: flex;
@@ -1113,7 +1113,7 @@ body {
 
 .hero.management-hero {
   position: relative;
-  background: url("/images/Management.jpg") center/cover no-repeat;
+  background: url("/images/south home.png") center/cover no-repeat;
  width: 100%;       
   height: 60svh;       
   display: flex;
@@ -1258,7 +1258,7 @@ body {
 
 .contact-hero {
   width: 100%;
-  background-image: url("/images/Management.jpg");
+  background-image: url("/images/south home.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -1330,7 +1330,7 @@ body {
 
 .events-hero {
   position: relative;
-  background: url("/images/events hero.jpg") center/cover no-repeat;
+  background: url("/images/south home.png") center/cover no-repeat;
   color: white;
   text-align: center;
   height: 100svh;   

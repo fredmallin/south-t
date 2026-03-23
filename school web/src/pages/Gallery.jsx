@@ -3,12 +3,11 @@ import "../App.css";
 
 // Images inside public/images
 const galleryImages = [
-  "/images/schoolgate3.jpg",
-  "/images/join us.jpeg",
-  "/images/sports.jpeg",
-  "/images/pics.jpeg",
-  "/images/pic2.jpeg",
-  "/images/pic3.jpeg",
+  "/images/SOUTH TEE.png",
+  "/images/st johnladies.png",
+  "/images/south home.png",
+  "/images/SOUTH BUS.jpeg",
+  "/images/dorms.png",
 ];
 
 function Gallery() {

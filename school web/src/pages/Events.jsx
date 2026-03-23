@@ -11,10 +11,10 @@ function Events() {
       title: "Science Fair Exhibition",
       category: "ACADEMIC",
       description:
-        "Giakanja boys' is an institution that has stood as a beacon of hope, discipline, and academic excellence for generations.",
+        "South Tetu Girl's is an institution that has stood as a beacon of hope, discipline, and academic excellence for generations.",
       time: "09:00 AM – 03:00 PM",
       location: "Main Auditorium",
-      image: "/images/sciencefair.jpeg",
+      image: "/images/SOUTH BUS.jpeg",
     },
     {
       id: 2,
@@ -24,10 +24,10 @@ function Events() {
       title: "Annual Sports Day",
       category: "SPORTS",
       description:
-        "Giakanja boys' is an institution that has stood as a beacon of hope, discipline, and academic excellence for generations.",
+        "South Tetu Girl's is an institution that has stood as a beacon of hope, discipline, and academic excellence for generations.",
       time: "08:30 AM – 05:00 PM",
       location: "School Playground",
-      image: "/images/sports runners.jpeg",
+      image: "/images/SOUTH BUS.jpeg",
     },
   ];
 
@@ -43,7 +43,7 @@ function Events() {
         "Students displayed their artwork and creative projects.",
       time: "10:00 AM – 04:00 PM",
       location: "Art Gallery",
-      image: "/images/ATRS.jpeg",
+      image: "/images/SOUTH BUS.jpeg",
     },
     {
       id: 2,
@@ -56,7 +56,7 @@ function Events() {
         "A lively performance showcasing the school choir and band.",
       time: "02:00 PM – 06:00 PM",
       location: "Auditorium",
-      image: "/images/Music.jpeg",
+      image: "/images/SOUTH BUS.jpeg",
     },
   ];
 

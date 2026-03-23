@@ -23,7 +23,7 @@ function Footer() {
   <FaWhatsapp style={{color: "#25D366"}} /> WhatsApp
 </a></p>
           <p><FaEnvelope /> South Tetu Girls High School</p>
-          <p><FaMapMarkerAlt /> Nyeri Othaya Road, Nyeri County</p>
+          <p><FaMapMarkerAlt /> Mukurwe-ini Murang'a road, Nyeri County</p>
           <p><FaClock /> Mon - Fri | 8:00 AM - 6:00 PM</p>
         </div>
 

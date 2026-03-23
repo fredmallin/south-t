@@ -52,7 +52,7 @@ function Contact() {
       {/* Contact Info & Form */}
       <section className="contact-section">
         <div className="contact-info">
-          <p>Email: <a href="mailto:admin@giakanjaboys.ac.ke">admin@giakanjaboys.ac.ke</a></p>
+          <p>Email: <a href="mailto:admin@southtetugirls.ac.ke">admin@southtetugirls.ac.ke</a></p>
           <p>Phone: <a href="tel:0201234567">020-1234567</a></p>
           <p>Address: Nyeri-Othaya Road, Nyeri County, Kenya</p>
         </div>

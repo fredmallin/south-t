@@ -12,11 +12,11 @@ function Home() {
   <div className="page-container">
       {/* Hero Section */}
       <Hero
-        images={[
-          "/images/gallery.jpeg",
-          "/images/schoolgate3.jpg",
-          "/images/Management.jpg",
-        ]}
+       images={[
+  "/images/south%20home.png",
+  "/images/st%20johnladies.png",
+  "/images/SOUTH%20TEE.png",
+]}
         title="South Tetu Girl's High School"
         subtitle="Empowering students to achieve excellence in academics and character."
         buttonText="View Assignments"
@@ -28,13 +28,13 @@ function Home() {
       <section className="messages scroll-fade">
         <div className="message-card">
           <img
-            src="/images/senior.jpeg"
+            src="/images/principal south.png"
             alt="Mr. Onesmas Mwangi"
             className="message-img"
           />
           <h2>Mr. Onesmas Mwangi - Senior Principal</h2>
           <p>
-            Welcome to Giakanja Boys, where we empower young men to reach their
+            Welcome to South Tetu Girl's , where we empower young women to reach their
             full potential...
           </p>
           <a href="/contact">Contact Us</a>
@@ -42,7 +42,7 @@ function Home() {
 
         <div className="message-card">
           <img
-            src="/images/principal.jpeg"
+            src="/images/principal south.png"
             alt="Dr. Josephine Kinya"
             className="message-img"
           />
@@ -56,7 +56,7 @@ function Home() {
 
         <div className="message-card">
           <img
-            src="/images/chair.jpeg"
+            src="/images/principal south.png"
             alt="Mr. Isaac Nyabicha"
             className="message-img"
           />
@@ -132,7 +132,7 @@ function Home() {
             </p>
           </div>
           <div className="value-card">
-            <img src="/images/values.png" alt="Core Values" />
+            <img src="/images/core values.png" alt="Core Values" />
             <h3>Core Values</h3>
             <p>
               Integrity, Godliness, Teamwork, Professionalism, Social
@@ -145,18 +145,18 @@ function Home() {
       {/* Stats Section */}
       <section className="stats scroll-fade">
         <div className="stat">
-          <img src="/images/group.png" alt="Teachers" className="stat-icon" />
+          <img src="/images/teachers.png" alt="Teachers" className="stat-icon" />
           <h3 className="count" data-target="50">0</h3>
           <p>Teachers</p>
         </div>
         <div className="stat">
-          <img src="/images/team.png" alt="Students" className="stat-icon" />
+          <img src="/images/population.png" alt="Students" className="stat-icon" />
           <h3 className="count" data-target="1200">0</h3>
           <p>Current population</p>
         </div>
         <div className="stat">
           <img
-            src="/images/classroom.png"
+            src="/images/classrooms.png"
             alt="Classrooms"
             className="stat-icon"
           />
@@ -164,7 +164,7 @@ function Home() {
           <p>Classrooms</p>
         </div>
         <div className="stat">
-          <img src="/images/calendar.png" alt="Years" className="stat-icon" />
+          <img src="/images/years.png" alt="Years" className="stat-icon" />
           <h3 className="count" data-target="60">0</h3>
           <p>Years</p>
         </div>
@@ -174,7 +174,7 @@ function Home() {
       <section className="join-us scroll-fade">
         <h2>Join Us</h2>
         <p>
-          Giakanja Boys empowers students with high-quality education, fostering
+          South Tetu Girl's empowers students with high-quality education, fostering
           academic excellence and confidence.
         </p>
         <Link to="/contact">Get in Touch</Link>

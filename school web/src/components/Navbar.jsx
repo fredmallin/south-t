@@ -10,7 +10,7 @@ function Navbar() {
       {/* Left: Logo + School Name */}
       <div className="navbar-brand">
         <img
-          src="/images/schoollogo.jpeg"
+          src="/images/south logo.jpeg"
           alt="School Logo"
           className="school-logo"
         />
