@@ -1,49 +1,67 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 import "../App.css";
 
-// Images inside public/images
-const galleryImages = [
-  "/images/SOUTH TEE.png",
-  "/images/st johnladies.png",
-  "/images/south home.png",
-  "/images/SOUTH BUS.jpeg",
-  "/images/dorms.png",
-];
+const DEFAULT_HERO = {
+  heroImage:    "/images/south home.png",
+  heroTitle:    "Our School Gallery",
+  heroSubtitle: "Capturing memories of learning, sports, and community at South Tetu Girl's.",
+};
 
 function Gallery() {
+  const [images,        setImages]        = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [hero,          setHero]          = useState(DEFAULT_HERO);
+
+  useEffect(() => {
+    // Load gallery images
+    getDocs(collection(db, "gallery"))
+      .then(snap => {
+        setImages(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+      })
+      .catch(() => {});
+
+    // Load hero settings
+    getDoc(doc(db, "pages", "gallery"))
+      .then(snap => {
+        if (snap.exists()) setHero(prev => ({ ...prev, ...snap.data() }));
+      })
+      .catch(() => {});
+  }, []);
 
   return (
-   <div className="gallery-page">
-      {/* Hero Section */}
-      <section className="hero gallery-hero">
+    <div className="gallery-page">
+
+      {/* Hero — background driven by Firestore */}
+      <section
+        className="hero gallery-hero"
+        style={{
+          backgroundImage: `url("${hero.heroImage || DEFAULT_HERO.heroImage}")`,
+        }}
+      >
         <div className="hero-overlay">
-          <h1>Our School Gallery</h1>
-          <p>Capturing memories of learning, sports, and community at Giakanja Boys.</p>
+          <h1>{hero.heroTitle    || DEFAULT_HERO.heroTitle}</h1>
+          <p> {hero.heroSubtitle || DEFAULT_HERO.heroSubtitle}</p>
         </div>
       </section>
 
-      {/* Gallery Section */}
       <section className="gallery">
         <h1>School Gallery</h1>
-        <p>
-          Explore moments from our school life, classrooms, events, and student
-          activities.
-        </p>
+        <p>Explore moments from our school life, classrooms, events, and student activities.</p>
 
         <div className="gallery-grid">
-          {galleryImages.map((img, index) => (
-            <div key={index} className="gallery-item">
+          {images.map(img => (
+            <div key={img.id} className="gallery-item">
               <img
-                src={img}
-                alt={`Gallery ${index + 1}`}
-                onClick={() => setSelectedImage(img)}
+                src={img.url}
+                alt="Gallery"
+                onClick={() => setSelectedImage(img.url)}
               />
             </div>
           ))}
         </div>
 
-        {/* Lightbox Overlay */}
         {selectedImage && (
           <div className="lightbox" onClick={() => setSelectedImage(null)}>
             <span className="close">&times;</span>
@@ -56,4 +74,3 @@ function Gallery() {
 }
 
 export default Gallery;
-
