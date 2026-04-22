@@ -1,186 +1,176 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../App.css";
 import StatsCounter from "../StatsCounter";
 import useScrollAnimation from "../hooks/useScrollAnimation";
 import Hero from "../components/Hero";
 import { Link } from "react-router-dom";
+import { doc, getDoc, collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
+
+const DEFAULT = {
+  heroImages: [
+    "/images/south%20home.png",
+    "/images/st%20johnladies.png",
+    "/images/SOUTH%20TEE.png",
+  ],
+  heroTitle: "South Tetu Girl's High School",
+  heroSubtitle: "Empowering students to achieve excellence in academics and character.",
+  heroButtonText: "View Assignments",
+
+  principal_name: "Mr. Onesmas Mwangi",
+  principal_title: "Senior Principal",
+  principal_msg: "Welcome to South Tetu Girl's, where we empower young women to reach their full potential...",
+  principal_img: "/images/principal south.png",
+
+  bom_name: "Dr. Josephine Kinya",
+  bom_title: "BOM Chairperson",
+  bom_msg: "On behalf of the Board of Management, we are committed to your academic and personal growth...",
+  bom_img: "/images/principal south.png",
+
+  pta_name: "Mr. Isaac Nyabicha",
+  pta_title: "P.A Chairperson",
+  pta_msg: "As the chairman of the Parent Association, I am proud to address our school community...",
+  pta_img: "/images/principal south.png",
+
+  motto: "Discipline and character makes a man.",
+  vision: "To be a leading institution in producing well-rounded individuals who excel academically, socially, and morally, contributing positively to society and the nation.",
+  mission: "To provide quality education that nurtures academic excellence, discipline, and holistic development in a conducive environment, empowering students to become responsible and innovative leaders.",
+  coreValues: "Integrity, Godliness, Teamwork, Professionalism, Social responsibility, Courtesy, Commitment.",
+
+  stat_teachers: "50",
+  stat_students: "1200",
+  stat_classrooms: "20",
+  stat_years: "60",
+
+  joinTitle: "Join Us",
+  joinText: "South Tetu Girl's empowers students with high-quality education, fostering academic excellence and confidence.",
+};
+
+const DEFAULT_OFFERINGS = [
+  { img: "/images/Academics.jpeg", title: "Academics",                   desc: "Our rigorous curriculum is designed to challenge and inspire students..." },
+  { img: "/images/arts.jpeg",      title: "Arts",                        desc: "Explore creativity through our vibrant arts program that encourages self-expression..." },
+  { img: "/images/sports.jpeg",    title: "Extra-Curricular Activities", desc: "Our vibrant extra-curricular programs promote teamwork, sports, and clubs..." },
+];
 
 function Home() {
   useScrollAnimation();
 
+  const [content,   setContent]   = useState(DEFAULT);
+  const [offerings, setOfferings] = useState(DEFAULT_OFFERINGS);
+
+  useEffect(() => {
+    getDoc(doc(db, "pages", "home"))
+      .then(snap => {
+        if (snap.exists() && snap.data()) {
+          setContent(prev => ({ ...prev, ...snap.data() }));
+        }
+      })
+      .catch(() => {});
+
+    getDocs(collection(db, "offerings"))
+      .then(snap => {
+        const programs = snap.docs
+          .map(d => ({ id: d.id, ...d.data() }))
+          .filter(o => o.section === "program")
+          .slice(0, 3);
+        if (programs.length > 0) {
+          setOfferings(programs.map(o => ({
+            img:   o.image || "/images/Academics.jpeg",
+            title: o.title,
+            desc:  o.description,
+          })));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  // filter(Boolean) removes any empty strings left by removed slides
+  const heroImages = Array.isArray(content.heroImages) && content.heroImages.filter(Boolean).length > 0
+    ? content.heroImages.filter(Boolean)
+    : DEFAULT.heroImages;
+
   return (
-  <div className="page-container">
-      {/* Hero Section */}
+    <div className="page-container">
+      
+
       <Hero
-       images={[
-  "/images/south%20home.png",
-  "/images/st%20johnladies.png",
-  "/images/SOUTH%20TEE.png",
-]}
-        title="South Tetu Girl's High School"
-        subtitle="Empowering students to achieve excellence in academics and character."
-        buttonText="View Assignments"
+        images={heroImages}
+        title={content.heroTitle}
+        subtitle={content.heroSubtitle}
+        buttonText={content.heroButtonText}
         buttonLink="/assignments"
         height="100svh"
       />
 
-      {/* Messages Section */}
       <section className="messages scroll-fade">
-        <div className="message-card">
-          <img
-            src="/images/principal south.png"
-            alt="Mr. Onesmas Mwangi"
-            className="message-img"
-          />
-          <h2>Mr. Onesmas Mwangi - Senior Principal</h2>
-          <p>
-            Welcome to South Tetu Girl's , where we empower young women to reach their
-            full potential...
-          </p>
-          <a href="/contact">Contact Us</a>
-        </div>
+        {[
+          { name: content.principal_name, title: content.principal_title, msg: content.principal_msg, img: content.principal_img },
+          { name: content.bom_name,       title: content.bom_title,       msg: content.bom_msg,       img: content.bom_img },
+          { name: content.pta_name,       title: content.pta_title,       msg: content.pta_msg,       img: content.pta_img },
+        ].map((person, i) => (
+          <div className="message-card" key={i}>
+            <img src={person.img} alt={person.name} className="message-img" />
+            <h2>{person.name} - {person.title}</h2>
+            <p>{person.msg}</p>
+            <a href="/contact">Contact Us</a>
+          </div>
 
-        <div className="message-card">
-          <img
-            src="/images/principal south.png"
-            alt="Dr. Josephine Kinya"
-            className="message-img"
-          />
-          <h2>Dr. Josephine Kinya - BOM Chairperson</h2>
-          <p>
-            On behalf of the Board of Management, we are committed to your
-            academic and personal growth...
-          </p>
-          <a href="/contact">Contact Us</a>
-        </div>
-
-        <div className="message-card">
-          <img
-            src="/images/principal south.png"
-            alt="Mr. Isaac Nyabicha"
-            className="message-img"
-          />
-          <h2>Mr. Isaac Nyabicha - P.A Chairperson</h2>
-          <p>
-            As the chairman of the Parent Association, I am proud to address our
-            school community...
-          </p>
-          <a href="/contact">Contact Us</a>
-        </div>
+          
+        ))}
       </section>
 
-      {/* Offerings Section */}
       <section className="offerings scroll-fade">
         <h2>Our Offerings</h2>
         <div className="offering-cards">
-          <div className="offering-card">
-            <img
-              src="/images/Academics.jpeg"
-              alt="Academics"
-              className="offering-img"
-            />
-            <h3>Academics</h3>
-            <p>
-              Our rigorous curriculum is designed to challenge and inspire
-              students...
-            </p>
-          </div>
-          <div className="offering-card">
-            <img src="/images/arts.jpeg" alt="Arts" className="offering-img" />
-            <h3>Arts</h3>
-            <p>
-              Explore creativity through our vibrant arts program that encourages
-              self-expression...
-            </p>
-          </div>
-          <div className="offering-card">
-            <img
-              src="/images/sports.jpeg"
-              alt="Extra-Curricular Activities"
-              className="offering-img"
-            />
-            <h3>Extra-Curricular Activities</h3>
-            <p>
-              Our vibrant extra-curricular programs promote teamwork, sports,
-              and clubs...
-            </p>
-          </div>
+          {offerings.map((o, i) => (
+            <div className="offering-card" key={i}>
+              <img src={o.img} alt={o.title} className="offering-img" />
+              <h3>{o.title}</h3>
+              <p>{o.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Values Section */}
       <section className="values scroll-fade">
         <h2>Our Values</h2>
         <div className="value-cards">
-          <div className="value-card">
-            <img src="/images/motto.png" alt="Motto" />
-            <h3>Motto</h3>
-            <p>Discipline and character makes a man.</p>
-          </div>
-          <div className="value-card">
-            <img src="/images/vision.png" alt="Vision" />
-            <h3>Vision</h3>
-            <p>
-              To be a leading institution in producing well-rounded individuals who excel academically, socially, and morally, contributing positively to society and the nation.
-            </p>
-          </div>
-          <div className="value-card">
-            <img src="/images/mission.png" alt="Mission" />
-            <h3>Mission</h3>
-            <p>
-              To provide quality education that nurtures academic excellence, discipline, and holistic development in a conducive environment, empowering students to become responsible and innovative leaders.
-            </p>
-          </div>
-          <div className="value-card">
-            <img src="/images/core values.png" alt="Core Values" />
-            <h3>Core Values</h3>
-            <p>
-              Integrity, Godliness, Teamwork, Professionalism, Social
-              responsibility, Courtesy, Commitment.
-            </p>
-          </div>
+          {[
+            { img: "/images/motto.png",       title: "Motto",       text: content.motto },
+            { img: "/images/vision.png",      title: "Vision",      text: content.vision },
+            { img: "/images/mission.png",     title: "Mission",     text: content.mission },
+            { img: "/images/core values.png", title: "Core Values", text: content.coreValues },
+          ].map((v, i) => (
+            <div className="value-card" key={i}>
+              <img src={v.img} alt={v.title} />
+              <h3>{v.title}</h3>
+              <p>{v.text}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Stats Section */}
       <section className="stats scroll-fade">
-        <div className="stat">
-          <img src="/images/teachers.png" alt="Teachers" className="stat-icon" />
-          <h3 className="count" data-target="50">0</h3>
-          <p>Teachers</p>
-        </div>
-        <div className="stat">
-          <img src="/images/population.png" alt="Students" className="stat-icon" />
-          <h3 className="count" data-target="1200">0</h3>
-          <p>Current population</p>
-        </div>
-        <div className="stat">
-          <img
-            src="/images/classrooms.png"
-            alt="Classrooms"
-            className="stat-icon"
-          />
-          <h3 className="count" data-target="20">0</h3>
-          <p>Classrooms</p>
-        </div>
-        <div className="stat">
-          <img src="/images/years.png" alt="Years" className="stat-icon" />
-          <h3 className="count" data-target="60">0</h3>
-          <p>Years</p>
-        </div>
+        {[
+          { img: "/images/teachers.png",   target: content.stat_teachers,   label: "Teachers" },
+          { img: "/images/population.png", target: content.stat_students,   label: "Current population" },
+          { img: "/images/classrooms.png", target: content.stat_classrooms, label: "Classrooms" },
+          { img: "/images/years.png",      target: content.stat_years,      label: "Years" },
+        ].map((s, i) => (
+          <div className="stat" key={i}>
+            <img src={s.img} alt={s.label} className="stat-icon" />
+            <h3 className="count" data-target={s.target}>0</h3>
+            <p>{s.label}</p>
+          </div>
+        ))}
       </section>
 
-      {/* Join Us Section */}
       <section className="join-us scroll-fade">
-        <h2>Join Us</h2>
-        <p>
-          South Tetu Girl's empowers students with high-quality education, fostering
-          academic excellence and confidence.
-        </p>
+        <h2>{content.joinTitle}</h2>
+        <p>{content.joinText}</p>
         <Link to="/contact">Get in Touch</Link>
       </section>
 
-      {/* Stats Counter Component */}
       <StatsCounter />
     </div>
   );

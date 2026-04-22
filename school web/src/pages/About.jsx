@@ -116,7 +116,7 @@ function About() {
                 {clubs.map((club, i) => (
                   <div className="card" key={club.id || i}>
                     <img src={club.image} alt={club.name} />
-                    <p>{club.name}</p>
+                   <p className="club-name">{club.name}</p>
                   </div>
                 ))}
               </div>
@@ -131,7 +131,8 @@ function About() {
                 {dorms.map((dorm, i) => (
                   <div className="card" key={dorm.id || i}>
                     <img src={dorm.image} alt={dorm.name} />
-                    <p>{dorm.name}: {dorm.desc}</p>
+                    <p className="dorm-name">{dorm.name}</p>
+                      {dorm.desc && <p className="dorm-desc">{dorm.desc}</p>}
                   </div>
                 ))}
               </div>

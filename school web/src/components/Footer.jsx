@@ -19,9 +19,11 @@ function Footer() {
         <div className="footer-section">
           <h3>Contact Us</h3>
           <p><FaPhoneAlt /> <a href="tel:+254791775974">+254 791 775 974</a></p>
-<p><a href="https://wa.me/254748257989" target="_blank" rel="noopener noreferrer">
-  <FaWhatsapp style={{color: "#25D366"}} /> WhatsApp
-</a></p>
+          <p>
+            <a href="https://wa.me/254748257989" target="_blank" rel="noopener noreferrer">
+              <FaWhatsapp style={{color: "#25D366"}} /> WhatsApp
+            </a>
+          </p>
           <p><FaEnvelope /> South Tetu Girls High School</p>
           <p><FaMapMarkerAlt /> Mukurwe-ini Murang'a road, Nyeri County</p>
           <p><FaClock /> Mon - Fri | 8:00 AM - 6:00 PM</p>
@@ -53,9 +55,17 @@ function Footer() {
         </div>
       </div>
 
-      {/* Bottom Bar */}
+      {/* Bottom Bar — © is the hidden admin link */}
       <div className="footer-bottom">
-        <p>© 2026 South Tetu Girls High School. All rights reserved.</p>
+        <p>
+          <Link
+            to="/admin/login"
+            style={{ color: "inherit", textDecoration: "none", cursor: "default" }}
+          >
+            ©
+          </Link>
+          {" "}2026 South Tetu Girls High School. All rights reserved.
+        </p>
         <p>
           Developed by{" "}
           <a
