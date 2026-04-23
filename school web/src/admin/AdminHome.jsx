@@ -274,7 +274,7 @@ export default function AdminHome() {
         ...style,
       }}
     >
-      {saving ? "Saving..." : saved ? "✓ Saved!" : "Save All Changes"}
+      {saving ? "Saving..." : saved ? "Saved!" : "Save All Changes"}
     </button>
   );
 
@@ -484,7 +484,7 @@ export default function AdminHome() {
                   border: "none", borderRadius: 8, cursor: "pointer",
                   fontWeight: 600, fontSize: 13, display: "block", marginBottom: 8,
                   opacity: offeringUploading ? 0.7 : 1 }}>
-                📁 Choose Image
+                 Choose Image
               </button>
               {offeringUploading && (
                 <p style={{ color: "#1a7c3e", fontSize: 13, margin: 0 }}>⏳ Uploading...</p>
