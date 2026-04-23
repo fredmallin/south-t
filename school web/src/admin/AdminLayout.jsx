@@ -32,6 +32,7 @@ export default function AdminLayout() {
     { to: "/admin/offerings",   label: "Offerings",   icon: BookOpen },
     { to: "/admin/management",  label: "Management",  icon: Users },
     { to: "/admin/about",       label: "About Page",  icon: Home },
+    { to: "/admin/change-password", label: "Change Password", icon: Edit2 },
   ];
 
   const navStyle = {

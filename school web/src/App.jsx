@@ -25,6 +25,7 @@ import AdminOfferings from "./admin/AdminOfferings";
 import AdminManagement from "./admin/AdminManagement";
 import AdminHome from "./admin/AdminHome";
 import AdminAbout from "./admin/AdminAbout";
+import AdminChangePassword from "./admin/AdminChangePassword";
 
 function App() {
   const location = useLocation();
@@ -45,6 +46,7 @@ function App() {
           <Route path="/offerings" element={<Offerings />} />
           <Route path="/management" element={<Management />} />
           <Route path="/contact" element={<Contact />} />
+          
 
           {/* Admin login — hidden, no navbar/footer */}
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -59,6 +61,7 @@ function App() {
             <Route path="offerings"   element={<AdminOfferings />} />
             <Route path="management"  element={<AdminManagement />} />
             <Route path="about"       element={<AdminAbout />} />
+            <Route path="change-password" element={<AdminChangePassword />} />
 
           </Route>
         </Routes>
