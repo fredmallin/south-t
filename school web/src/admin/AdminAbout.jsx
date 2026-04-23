@@ -375,7 +375,7 @@ export default function AdminAbout() {
       {activeSection === "dorms" && (
         <>
           {card(<>
-            {secTitle(editDormId ? "✏️ Edit Dorm" : "Add Dormitory")}
+            {secTitle(editDormId ? "Edit Dorm" : "Add Dormitory")}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 16px" }}>
               <div>
                 <label style={{ fontSize: 13, fontWeight: 600, color: "#444" }}>Dorm Name</label>
