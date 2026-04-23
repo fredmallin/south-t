@@ -242,7 +242,7 @@ export default function AdminEvents() {
             fontWeight: 700, cursor: "pointer", fontSize: 14,
             opacity: heroUploading ? 0.7 : 1 }}
         >
-          {heroSaved ? "✓ Saved!" : "Save Hero"}
+          {heroSaved ? "Saved!" : "Save Hero"}
         </button>
       </div>
 
