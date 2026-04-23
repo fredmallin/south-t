@@ -1,64 +1,65 @@
 import { useState, useEffect, useRef } from "react";
-import { collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
+import {
+  collection, addDoc, getDocs, deleteDoc,
+  doc, setDoc, getDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
-
-const FORMS = ["Form One", "Form Two", "Form Three", "Form Four"];
 
 export default function AdminAssignments() {
   const [assignments, setAssignments] = useState([]);
+  const [forms, setForms] = useState(["Form One", "Form Two", "Form Three", "Form Four"]);
   const [form, setForm] = useState({ formLevel: "Form One", subject: "", fileUrl: "", fileName: "" });
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [activeForm, setActiveForm] = useState("Form One");
   const fileRef = useRef();
 
-  const fetchAssignments = async () => {
-    const snap = await getDocs(collection(db, "assignments"));
-    setAssignments(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+  const fetchFormNames = async () => {
+    try {
+      const settingsSnap = await getDoc(doc(db, "schoolSettings", "formLevels"));
+      if (settingsSnap.exists()) {
+        const savedForms = settingsSnap.data().forms || [];
+        if (savedForms.length > 0) {
+          setForms(savedForms);
+          setForm((prev) => ({ ...prev, formLevel: savedForms[0] }));
+          setActiveForm(savedForms[0]);
+        }
+      }
+    } catch (error) { console.error("Failed to fetch form names:", error); }
   };
 
-  useEffect(() => { fetchAssignments(); }, []);
+  const saveFormNames = async () => {
+    try {
+      await setDoc(doc(db, "schoolSettings", "formLevels"), { forms });
+      alert("Form names updated successfully!");
+    } catch (error) { alert("Failed to save form names"); }
+  };
 
-  // Upload PDF to Cloudinary
+  const fetchAssignments = async () => {
+    const snap = await getDocs(collection(db, "assignments"));
+    setAssignments(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+  };
+
+  useEffect(() => { fetchAssignments(); fetchFormNames(); }, []);
+
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
-    // Only allow PDF, DOC, DOCX
-    const allowed = ["application/pdf"];
-
-if (!allowed.includes(file.type)) {
-  alert("Only PDF documents are allowed.");
-  return;
-}
-
+    if (file.type !== "application/pdf") { alert("Only PDF documents are allowed."); return; }
     setUploading(true);
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "freddy"); // ← replace
-    formData.append("resource_type", "raw"); // required for non-image files
-
+    formData.append("upload_preset", "freddy");
+    formData.append("resource_type", "raw");
     try {
-      const res = await fetch(
-        "https://api.cloudinary.com/v1_1/dwe1cwhgj/raw/upload", 
-        { method: "POST", body: formData }
-      );
+      const res = await fetch("https://api.cloudinary.com/v1_1/dwe1cwhgj/raw/upload", { method: "POST", body: formData });
       const data = await res.json();
       if (data.secure_url) {
-        setForm(prev => ({
-          ...prev,
-          fileUrl: data.secure_url,
-          fileName: prev.fileName || file.name, // auto-fill filename if empty
-        }));
+        setForm((prev) => ({ ...prev, fileUrl: data.secure_url, fileName: prev.fileName || file.name }));
         alert("File uploaded successfully!");
-      } else {
-        alert("Upload failed. Check your Cloudinary preset.");
-      }
-    } catch (err) {
-      alert("Upload error: " + err.message);
-    } finally {
-      setUploading(false);
-    }
+      } else { alert("Upload failed."); }
+    } catch (err) { alert("Upload error: " + err.message); }
+    finally { setUploading(false); }
   };
 
   const handleAdd = async () => {
@@ -70,165 +71,250 @@ if (!allowed.includes(file.type)) {
       setForm({ formLevel: form.formLevel, subject: "", fileUrl: "", fileName: "" });
       if (fileRef.current) fileRef.current.value = "";
       await fetchAssignments();
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this assignment?")) return;
     await deleteDoc(doc(db, "assignments", id));
-    setAssignments(prev => prev.filter(a => a.id !== id));
+    setAssignments((prev) => prev.filter((a) => a.id !== id));
   };
 
-  const filtered = assignments.filter(a => a.formLevel === activeForm);
+  const filtered = assignments.filter((a) => a.formLevel === activeForm);
 
-  const inp = {
-    display: "block", width: "100%", padding: "9px 12px",
-    borderRadius: 8, border: "1px solid #ddd", fontSize: 14,
-    marginBottom: 12, boxSizing: "border-box"
+  // ── Styles ──────────────────────────────────────────────
+  const s = {
+    page: {
+      maxWidth: 800, margin: "0 auto", padding: "32px 24px",
+      fontFamily: "'Segoe UI', sans-serif", color: "#1a1a1a",
+    },
+    pageTitle: {
+      fontSize: "1.8rem", fontWeight: 700, color: "#653115",
+      marginBottom: 24, borderBottom: "3px solid #653115",
+      paddingBottom: 12,
+    },
+    sectionCard: {
+      background: "#fff", borderRadius: 12, padding: 24,
+      marginBottom: 24, boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+      border: "1px solid #f0e6df",
+    },
+    sectionTitle: {
+      fontSize: "1.1rem", fontWeight: 700, color: "#653115",
+      marginBottom: 16, display: "flex", alignItems: "center", gap: 8,
+    },
+    formNamesGrid: {
+      display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16,
+    },
+    input: {
+      width: "100%", padding: "10px 14px", borderRadius: 8,
+      border: "1.5px solid #e0d0c8", fontSize: "0.92rem",
+      outline: "none", boxSizing: "border-box",
+      transition: "border-color 0.2s",
+      fontFamily: "inherit",
+    },
+    inputGroup: { display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 },
+    row: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 },
+    select: {
+      width: "100%", padding: "10px 14px", borderRadius: 8,
+      border: "1.5px solid #e0d0c8", fontSize: "0.92rem",
+      background: "#616161", outline: "none", fontFamily: "inherit",
+      cursor: "pointer",
+    },
+    fileBox: {
+      border: "2px dashed #e0d0c8", borderRadius: 8, padding: "16px",
+      textAlign: "center", cursor: "pointer", background: "#fdf8f6",
+    },
+    fileInput: { width: "100%", fontSize: "0.88rem", cursor: "pointer" },
+    btnPrimary: {
+      background: "#653115", color: "#fff", border: "none",
+      padding: "11px 24px", borderRadius: 8, fontSize: "0.92rem",
+      fontWeight: 600, cursor: "pointer", transition: "background 0.2s",
+      width: "100%",
+    },
+    btnSave: {
+      background: "#2a6f97", color: "#fff", border: "none",
+      padding: "10px 20px", borderRadius: 8, fontSize: "0.88rem",
+      fontWeight: 600, cursor: "pointer",
+    },
+    uploadBadge: {
+      display: "inline-block", background: "#dcfce7", color: "#166534",
+      fontSize: "0.78rem", fontWeight: 600, padding: "4px 10px",
+      borderRadius: 20, marginTop: 8,
+    },
+    tabRow: { display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 },
+    tab: (active) => ({
+      padding: "8px 18px", borderRadius: 20, border: "1.5px solid #653115",
+      background: active ? "#653115" : "#fff",
+      color: active ? "#fff" : "#653115",
+      fontWeight: 600, fontSize: "0.85rem", cursor: "pointer",
+      transition: "all 0.2s",
+    }),
+    assignmentItem: {
+      display: "flex", alignItems: "center", justifyContent: "space-between",
+      padding: "14px 16px", borderRadius: 10, marginBottom: 10,
+      background: "#fdf8f6", border: "1px solid #f0e6df",
+      flexWrap: "wrap", gap: 8,
+    },
+    assignmentLeft: { display: "flex", flexDirection: "column", gap: 2 },
+    assignmentName: { fontWeight: 700, fontSize: "0.95rem", color: "#1a1a1a" },
+    assignmentFile: { fontSize: "0.78rem", color: "#888" },
+    assignmentRight: { display: "flex", alignItems: "center", gap: 8 },
+    viewBtn: {
+      padding: "6px 14px", borderRadius: 6, background: "#e0f2fe",
+      color: "#0369a1", border: "none", fontSize: "0.82rem",
+      fontWeight: 600, cursor: "pointer", textDecoration: "none",
+      display: "inline-block",
+    },
+    deleteBtn: {
+      padding: "6px 14px", borderRadius: 6, background: "#fee2e2",
+      color: "#dc2626", border: "none", fontSize: "0.82rem",
+      fontWeight: 600, cursor: "pointer",
+    },
+    empty: {
+      textAlign: "center", color: "#aaa", padding: "32px 0",
+      fontSize: "0.9rem",
+    },
+    divider: { border: "none", borderTop: "1px solid #f0e6df", margin: "4px 0 16px" },
   };
 
   return (
-    <div>
-      <h1 style={{ fontSize: 22, fontWeight: 700, marginBottom: 24 }}>Assignments</h1>
+    <div style={s.page}>
+      <h1 style={s.pageTitle}> Assignments Admin</h1>
 
-      {/* Add Assignment Form */}
-      <div style={{ background: "#fff", border: "1px solid #e8e8e8",
-        borderRadius: 12, padding: 24, marginBottom: 36 }}>
-        <h2 style={{ fontSize: 17, fontWeight: 700, marginBottom: 16 }}>Add Assignment</h2>
+      {/* ── Edit Form Names ── */}
+      <div style={s.sectionCard}>
+        <div style={s.sectionTitle}>Edit Form Names</div>
+        <hr style={s.divider} />
+        <div style={s.formNamesGrid}>
+          {forms.map((f, index) => (
+            <input
+              key={index}
+              value={f}
+              style={s.input}
+              onChange={(e) => {
+                const updated = [...forms];
+                updated[index] = e.target.value;
+                setForms(updated);
+              }}
+            />
+          ))}
+        </div>
+        <button style={s.btnSave} onClick={saveFormNames}>
+           Save Form Names
+        </button>
+      </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 16px" }}>
-          <div>
-            <label style={{ fontSize: 13, fontWeight: 600, color: "#444" }}>Form Level</label>
-            <select style={inp} value={form.formLevel}
-              onChange={e => setForm({ ...form, formLevel: e.target.value })}>
-              {FORMS.map(f => <option key={f}>{f}</option>)}
-            </select>
+      {/* ── Add Assignment ── */}
+      <div style={s.sectionCard}>
+        <div style={s.sectionTitle}>Add Assignment</div>
+        <hr style={s.divider} />
+
+        <div style={s.inputGroup}>
+          <div style={s.row}>
+            <div>
+              <label style={{ fontSize: "0.8rem", color: "#666", marginBottom: 4, display: "block" }}>
+                Form Level
+              </label>
+              <select
+                style={s.select}
+                value={form.formLevel}
+                onChange={(e) => setForm({ ...form, formLevel: e.target.value })}
+              >
+                {forms.map((f) => <option key={f}>{f}</option>)}
+              </select>
+            </div>
+
+            <div>
+              <label style={{ fontSize: "0.8rem", color: "#666", marginBottom: 4, display: "block" }}>
+                Subject
+              </label>
+              <input
+                style={s.input}
+                placeholder="e.g. Mathematics"
+                value={form.subject}
+                onChange={(e) => setForm({ ...form, subject: e.target.value })}
+              />
+            </div>
           </div>
 
           <div>
-            <label style={{ fontSize: 13, fontWeight: 600, color: "#444" }}>Subject</label>
-            <input style={inp} placeholder="e.g. Mathematics" value={form.subject}
-              onChange={e => setForm({ ...form, subject: e.target.value })} />
-          </div>
-
-          <div>
-            <label style={{ fontSize: 13, fontWeight: 600, color: "#444" }}>
-              Display Name (shown to students)
-            </label>
-            <input style={inp} placeholder="e.g. Form 1 Maths Holiday Assignment"
-              value={form.fileName}
-              onChange={e => setForm({ ...form, fileName: e.target.value })} />
-          </div>
-
-          <div>
-            <label style={{ fontSize: 13, fontWeight: 600, color: "#444" }}>
-              Upload PDF 
+            <label style={{ fontSize: "0.8rem", color: "#666", marginBottom: 4, display: "block" }}>
+              Display Name
             </label>
             <input
-              type="file"
-              accept=".pdf"
-              ref={fileRef}
-              onChange={handleFileUpload}
-              style={{ fontSize: 14, marginBottom: 8, display: "block" }}
+              style={s.input}
+              placeholder="e.g. Form 1 Maths Holiday Assignment"
+              value={form.fileName}
+              onChange={(e) => setForm({ ...form, fileName: e.target.value })}
             />
-            {uploading && (
-              <p style={{ color: "#1a7c3e", fontSize: 13, fontWeight: 600 }}>
-                ⏳ Uploading file...
-              </p>
-            )}
-            {form.fileUrl && !uploading && (
-              <p style={{ color: "#27ae60", fontSize: 13, fontWeight: 600 }}>
-                ✓ File uploaded and ready
-              </p>
-            )}
+          </div>
+
+          <div>
+            <label style={{ fontSize: "0.8rem", color: "#666", marginBottom: 4, display: "block" }}>
+              Upload PDF
+            </label>
+            <div style={s.fileBox}>
+              <input
+                type="file"
+                accept=".pdf"
+                ref={fileRef}
+                style={s.fileInput}
+                onChange={handleFileUpload}
+              />
+              {uploading && (
+                <p style={{ marginTop: 8, fontSize: "0.82rem", color: "#653115" }}>
+                  Uploading...
+                </p>
+              )}
+              {form.fileUrl && !uploading && (
+                <span style={s.uploadBadge}>File uploaded</span>
+              )}
+            </div>
           </div>
         </div>
 
         <button
+          style={{ ...s.btnPrimary, opacity: loading || uploading ? 0.6 : 1 }}
           onClick={handleAdd}
           disabled={loading || uploading}
-          style={{
-            padding: "10px 28px", background: "#1a7c3e", color: "#fff",
-            border: "none", borderRadius: 8, fontWeight: 700,
-            cursor: loading || uploading ? "not-allowed" : "pointer",
-            fontSize: 14, opacity: loading || uploading ? 0.7 : 1,
-            marginTop: 8
-          }}>
-          {loading ? "Saving..." : "Add Assignment"}
+        >
+          {loading ? "Saving..." : uploading ? "Uploading..." : "Add Assignment"}
         </button>
       </div>
 
-      {/* View by form */}
-      <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 12 }}>All Assignments</h2>
-      <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap" }}>
-        {FORMS.map(f => (
-          <button key={f} onClick={() => setActiveForm(f)}
-            style={{
-              padding: "8px 20px", borderRadius: 8, border: "none",
-              cursor: "pointer", fontWeight: 600, fontSize: 14,
-              background: activeForm === f ? "#1a7c3e" : "#e8f5e9",
-              color: activeForm === f ? "#fff" : "#1a7c3e"
-            }}>
-            {f}
-          </button>
-        ))}
-      </div>
+      {/* ── View Assignments ── */}
+      <div style={s.sectionCard}>
+        <div style={s.sectionTitle}>Assignments by Form</div>
+        <hr style={s.divider} />
 
-      {filtered.length === 0 && (
-        <p style={{ color: "#888" }}>No assignments for {activeForm} yet.</p>
-      )}
+        <div style={s.tabRow}>
+          {forms.map((f) => (
+            <button key={f} style={s.tab(activeForm === f)} onClick={() => setActiveForm(f)}>
+              {f}
+            </button>
+          ))}
+        </div>
 
-      <div style={{ display: "grid", gap: 10 }}>
-        {filtered.map(a => (
-          <div key={a.id} style={{
-            background: "#fff", border: "1px solid #e8e8e8",
-            borderRadius: 10, padding: "14px 20px",
-            display: "flex", justifyContent: "space-between",
-            alignItems: "center", gap: 12
-          }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-
-              {/* PDF icon */}
-              <div style={{
-                width: 44, height: 44, borderRadius: 8,
-                background: "#fdecea", display: "flex",
-                alignItems: "center", justifyContent: "center",
-                flexShrink: 0
-              }}>
-                <span style={{ fontSize: 20 }}>📄</span>
+        {filtered.length === 0 ? (
+          <p style={s.empty}>No assignments for {activeForm} yet.</p>
+        ) : (
+          filtered.map((a) => (
+            <div key={a.id} style={s.assignmentItem}>
+              <div style={s.assignmentLeft}>
+                <span style={s.assignmentName}>{a.subject}</span>
+                <span style={s.assignmentFile}>{a.fileName}</span>
               </div>
-
-              <div>
-                <strong style={{ fontSize: 15 }}>{a.subject}</strong>
-                {a.fileName && (
-  <p style={{ color: "#555", fontSize: 13, margin: "2px 0 0" }}>
-    {a.fileName}
-  </p>
-)}
-
-<a
-  href={a.fileUrl}
-  target="_blank"
-  rel="noopener noreferrer"
-  style={{ fontSize: 12, color: "#2471a3" }}
->
-  View / Download file ↗
-</a>
+              <div style={s.assignmentRight}>
+                <a href={a.fileUrl} target="_blank" rel="noopener noreferrer" style={s.viewBtn}>
+                  👁 View
+                </a>
+                <button style={s.deleteBtn} onClick={() => handleDelete(a.id)}>
+                  🗑 Delete
+                </button>
               </div>
             </div>
-
-            <button onClick={() => handleDelete(a.id)}
-              style={{
-                padding: "6px 16px", background: "#c0392b", color: "#fff",
-                border: "none", borderRadius: 6, cursor: "pointer",
-                fontSize: 13, whiteSpace: "nowrap"
-              }}>
-              Delete
-            </button>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

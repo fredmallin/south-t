@@ -1,82 +1,63 @@
 import React, { useState, useEffect } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc
+} from "firebase/firestore";
 import { db } from "../firebase";
 
-const FORMS = ["Form One", "Form Two", "Form Three", "Form Four"];
+const DEFAULT_FORMS = [
+  "Form One",
+  "Form Two",
+  "Form Three",
+  "Form Four"
+];
 
-// Your original hardcoded data as fallback
+// fallback assignments
 const fallbackAssignments = {
   "Form One": [
     { name: "Mathematics", file: "maths1.pdf" },
-    { name: "English", file: "form1_english.pdf" },
-    { name: "Kiswahili", file: "form1_kiswahili.pdf" },
-    { name: "Biology", file: "form1_biology.pdf" },
-    { name: "Chemistry", file: "form1_chemistry.pdf" },
-    { name: "Physics", file: "form1_physics.pdf" },
-    { name: "Geography", file: "form1_geography.pdf" },
-    { name: "History", file: "form1_history.pdf" },
-    { name: "C.R.E", file: "form1_cre.pdf" },
-    { name: "I.R.E", file: "form1_ire.pdf" },
-    { name: "Computer Studies", file: "form1_computer_studies.pdf" },
-    { name: "Business", file: "form1_business.pdf" },
-    { name: "Agriculture", file: "form1_agriculture.pdf" },
+    { name: "English", file: "form1_english.pdf" }
   ],
 
-  "Form Two": [
-    { name: "Mathematics", file: "form2_mathematics.pdf" },
-    { name: "English", file: "form2_english.pdf" },
-    { name: "Kiswahili", file: "form2_kiswahili.pdf" },
-    { name: "Biology", file: "form2_biology.pdf" },
-    { name: "Chemistry", file: "form2_chemistry.pdf" },
-    { name: "Physics", file: "form2_physics.pdf" },
-    { name: "Geography", file: "form2_geography.pdf" },
-    { name: "History", file: "form2_history.pdf" },
-    { name: "C.R.E", file: "form2_cre.pdf" },
-    { name: "I.R.E", file: "form2_ire.pdf" },
-    { name: "Computer Studies", file: "form2_computer_studies.pdf" },
-    { name: "Business", file: "form2_business.pdf" },
-    { name: "Agriculture", file: "form2_agriculture.pdf" },
-  ],
-
-  "Form Three": [
-    { name: "Mathematics", file: "form3_mathematics.pdf" },
-    { name: "English", file: "form3_english.pdf" },
-    { name: "Kiswahili", file: "form3_kiswahili.pdf" },
-    { name: "Biology", file: "form3_biology.pdf" },
-    { name: "Chemistry", file: "form3_chemistry.pdf" },
-    { name: "Physics", file: "form3_physics.pdf" },
-    { name: "Geography", file: "form3_geography.pdf" },
-    { name: "History", file: "form3_history.pdf" },
-    { name: "C.R.E", file: "form3_cre.pdf" },
-    { name: "I.R.E", file: "form3_ire.pdf" },
-    { name: "Computer Studies", file: "form3_computer_studies.pdf" },
-    { name: "Business", file: "form3_business.pdf" },
-    { name: "Agriculture", file: "form3_agriculture.pdf" },
-  ],
-
-  "Form Four": [
-    { name: "Mathematics", file: "FORM-4-AUGUST-HOLIDAY-ASSIGNMENT.docx" },
-    { name: "English", file: "form4_english.pdf" },
-    { name: "Kiswahili", file: "form4_kiswahili.pdf" },
-    { name: "Biology", file: "form4_biology.pdf" },
-    { name: "Chemistry", file: "form4_chemistry.pdf" },
-    { name: "Physics", file: "form4_physics.pdf" },
-    { name: "Geography", file: "form4_geography.pdf" },
-    { name: "History", file: "form4_history.pdf" },
-    { name: "C.R.E", file: "form4_cre.pdf" },
-    { name: "I.R.E", file: "form4_ire.pdf" },
-    { name: "Computer Studies", file: "form4_computer_studies.pdf" },
-    { name: "Business", file: "form4_business.pdf" },
-    { name: "Agriculture", file: "form4_agriculture.pdf" },
-  ],
+  "Form Two": [],
+  "Form Three": [],
+  "Form Four": []
 };
 
 export default function Assignments() {
+  const [forms, setForms] = useState(DEFAULT_FORMS);
   const [openForm, setOpenForm] = useState(null);
   const [firestoreData, setFirestoreData] = useState({});
 
   useEffect(() => {
-    getDocs(collection(db, "assignments")).then((snap) => {
+    fetchFormNames();
+    fetchAssignments();
+  }, []);
+
+  // Fetch editable form names from Firestore
+  const fetchFormNames = async () => {
+    try {
+      const settingsRef = doc(db, "schoolSettings", "formLevels");
+      const settingsSnap = await getDoc(settingsRef);
+
+      if (settingsSnap.exists()) {
+        const savedForms = settingsSnap.data().forms || [];
+
+        if (savedForms.length > 0) {
+          setForms(savedForms);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to fetch form names:", error);
+    }
+  };
+
+  // Fetch assignments
+  const fetchAssignments = async () => {
+    try {
+      const snap = await getDocs(collection(db, "assignments"));
       const grouped = {};
 
       snap.docs.forEach((d) => {
@@ -90,13 +71,15 @@ export default function Assignments() {
           name: a.subject,
           file: a.fileUrl,
           fileName: a.fileName,
-          id: d.id,
+          id: d.id
         });
       });
 
       setFirestoreData(grouped);
-    });
-  }, []);
+    } catch (error) {
+      console.error("Failed to fetch assignments:", error);
+    }
+  };
 
   const getData = (form) => {
     if (firestoreData[form] && firestoreData[form].length > 0) {
@@ -111,9 +94,8 @@ export default function Assignments() {
       <h1>Assignments</h1>
 
       <div className="form-buttons">
-        {FORMS.map((form) => (
+        {forms.map((form) => (
           <div key={form}>
-            {/* Button */}
             <button
               onClick={() =>
                 setOpenForm(openForm === form ? null : form)
@@ -122,14 +104,13 @@ export default function Assignments() {
               {form}
             </button>
 
-            {/* 👇 Assignments now drop directly below clicked form */}
             {openForm === form && (
               <div className="subjects-container">
-                <h2>{form} Assignment</h2>
+                <h2>{form} Assignments</h2>
 
                 <ul>
                   {getData(form).map((subject, i) => (
-                    <li key={i}>
+                    <li key={subject.id || i}>
                       <a
                         href={
                           subject.file?.startsWith("http")

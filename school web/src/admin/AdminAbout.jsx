@@ -222,7 +222,7 @@ export default function AdminAbout() {
       {activeSection === "sports" && (
         <>
           {card(<>
-            {secTitle(editSportId ? "✏️ Edit Sport" : "Add Sport")}
+            {secTitle(editSportId ? "Edit Sport" : "Add Sport")}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 16px" }}>
               <div>
                 <label style={{ fontSize: 13, fontWeight: 600, color: "#444" }}>Sport Name</label>
@@ -302,7 +302,7 @@ export default function AdminAbout() {
       {activeSection === "clubs" && (
         <>
           {card(<>
-            {secTitle(editClubId ? "✏️ Edit Club" : "Add Club / Society")}
+            {secTitle(editClubId ? " Edit Club" : "Add Club / Society")}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 16px" }}>
               <div>
                 <label style={{ fontSize: 13, fontWeight: 600, color: "#444" }}>Club Name</label>
