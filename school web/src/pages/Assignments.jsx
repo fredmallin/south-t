@@ -21,6 +21,7 @@ const fallbackAssignments = {
     { name: "Business", file: "form1_business.pdf" },
     { name: "Agriculture", file: "form1_agriculture.pdf" },
   ],
+
   "Form Two": [
     { name: "Mathematics", file: "form2_mathematics.pdf" },
     { name: "English", file: "form2_english.pdf" },
@@ -36,6 +37,7 @@ const fallbackAssignments = {
     { name: "Business", file: "form2_business.pdf" },
     { name: "Agriculture", file: "form2_agriculture.pdf" },
   ],
+
   "Form Three": [
     { name: "Mathematics", file: "form3_mathematics.pdf" },
     { name: "English", file: "form3_english.pdf" },
@@ -51,6 +53,7 @@ const fallbackAssignments = {
     { name: "Business", file: "form3_business.pdf" },
     { name: "Agriculture", file: "form3_agriculture.pdf" },
   ],
+
   "Form Four": [
     { name: "Mathematics", file: "FORM-4-AUGUST-HOLIDAY-ASSIGNMENT.docx" },
     { name: "English", file: "form4_english.pdf" },
@@ -71,69 +74,86 @@ const fallbackAssignments = {
 export default function Assignments() {
   const [openForm, setOpenForm] = useState(null);
   const [firestoreData, setFirestoreData] = useState({});
-  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    getDocs(collection(db, "assignments")).then(snap => {
+    getDocs(collection(db, "assignments")).then((snap) => {
       const grouped = {};
-      snap.docs.forEach(d => {
+
+      snap.docs.forEach((d) => {
         const a = d.data();
-        if (!grouped[a.formLevel]) grouped[a.formLevel] = [];
-        grouped[a.formLevel].push({ name: a.subject, file: a.fileUrl, fileName: a.fileName, id: d.id });
+
+        if (!grouped[a.formLevel]) {
+          grouped[a.formLevel] = [];
+        }
+
+        grouped[a.formLevel].push({
+          name: a.subject,
+          file: a.fileUrl,
+          fileName: a.fileName,
+          id: d.id,
+        });
       });
+
       setFirestoreData(grouped);
-      setLoaded(true);
     });
   }, []);
 
-  // Use Firestore data if available for that form, else fallback
   const getData = (form) => {
-    if (firestoreData[form] && firestoreData[form].length > 0) return firestoreData[form];
+    if (firestoreData[form] && firestoreData[form].length > 0) {
+      return firestoreData[form];
+    }
+
     return fallbackAssignments[form] || [];
   };
 
   return (
-    <main className="w-full px-4 py-10">
-      <h1 className="text-3xl font-bold text-green-700 mb-8 text-center">
-        Assignments
-      </h1>
+    <main className="assignments">
+      <h1>Assignments</h1>
 
       <div className="form-buttons">
         {FORMS.map((form) => (
-          <button
-            key={form}
-            onClick={() => setOpenForm(openForm === form ? null : form)}
-            className={`px-6 py-3 rounded-lg font-semibold shadow ${
-              openForm === form ? "bg-green-600 text-white" : "bg-green-100 hover:bg-green-200"
-            }`}
-          >
-            {form}
-          </button>
+          <div key={form}>
+            {/* Button */}
+            <button
+              onClick={() =>
+                setOpenForm(openForm === form ? null : form)
+              }
+            >
+              {form}
+            </button>
+
+            {/* 👇 Assignments now drop directly below clicked form */}
+            {openForm === form && (
+              <div className="subjects-container">
+                <h2>{form} Assignment</h2>
+
+                <ul>
+                  {getData(form).map((subject, i) => (
+                    <li key={i}>
+                      <a
+                        href={
+                          subject.file?.startsWith("http")
+                            ? subject.file
+                            : `/pdfs/${subject.file}`
+                        }
+                        download={!subject.file?.startsWith("http")}
+                        target={
+                          subject.file?.startsWith("http")
+                            ? "_blank"
+                            : undefined
+                        }
+                        rel="noopener noreferrer"
+                      >
+                        {subject.fileName || subject.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         ))}
       </div>
-
-      {openForm && (
-        <div className="max-w-xl mx-auto bg-white border rounded shadow p-6">
-          <h2 className="text-xl font-bold mb-4 text-center text-green-700">
-            {openForm} Subjects
-          </h2>
-          <ul className="space-y-2">
-            {getData(openForm).map((subject, i) => (
-              <li key={i}>
-                <a
-                  href={subject.file?.startsWith("http") ? subject.file : `/pdfs/${subject.file}`}
-                  download={!subject.file?.startsWith("http")}
-                  target={subject.file?.startsWith("http") ? "_blank" : undefined}
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >
-                  {subject.fileName || subject.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </main>
   );
 }

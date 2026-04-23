@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import "./App.css";
 
-// Public pages (all your existing ones — unchanged)
+// Public pages 
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Gallery from "./pages/Gallery";
@@ -13,7 +13,7 @@ import Offerings from "./pages/Offerings";
 import Management from "./pages/Management";
 import Contact from "./pages/Contact";
 
-// Admin (new files you create)
+// Admin 
 import AdminLogin from "./admin/AdminLogin";
 import AdminLayout from "./admin/AdminLayout";
 import ProtectedRoute from "./admin/ProtectedRoute";

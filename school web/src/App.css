@@ -375,16 +375,38 @@ body {
   padding: 1rem;
   border-radius: 8px;
   width: 250px;
+
+  /* add these */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
+/* hover lift effect */
+.offering-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* image zoom on hover */
 .offering-img {
   width: 100%;
   height: 150px;
   object-fit: cover;
   border-radius: 10px;
   margin-bottom: 1rem;
+
+  transition: transform 0.4s ease;
 }
 
+/* zoom image when card is hovered */
+.offering-card:hover .offering-img {
+  transform: scale(1.08);
+}
+
+/* optional text highlight */
+.offering-card:hover h3 {
+  color: #1e88e5;
+}
 .values {
   padding: 2rem;
   text-align: center;
@@ -932,9 +954,9 @@ body {
   width: 100%;
 }
 .assignments h1 {
-  font-size: 2rem;
+  font-size: 4rem;
   margin-bottom: 1rem;
-  color: #0e9c66;
+  color: #010f0a;
 }
 
 .assignments p {
@@ -1774,7 +1796,21 @@ body {
   color: #222;
 }
 
-/* Smooth base transition */
+.value-card {
+  background-color: #cfcece;
+  border-radius: 12px;
+  padding: 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+/* 🔥 Card hover effect */
+.value-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.18);
+}
+
+/* Smooth icon transition */
 .value-icon {
   transition: transform 0.3s ease;
 }
@@ -1812,4 +1848,49 @@ body {
   50%  { transform: rotate(12deg) scale(1.15); }
   75%  { transform: rotate(-6deg) scale(1.08); }
   100% { transform: rotate(0deg) scale(1); }
+}
+
+/* ===== NAVBAR FIT FIX ===== */
+@media (min-width: 769px) {
+  .navbar {
+    gap: 1rem;
+    padding: 0.5rem 1.5rem;
+  }
+
+  .navbar-brand {
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .school-name {
+    font-size: 1.05rem;
+    white-space: nowrap;
+  }
+
+  .nav-links {
+    flex-wrap: nowrap;
+    gap: 0.1rem;
+  }
+
+  .nav-links a {
+    padding: 0.45rem 0.75rem;
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1100px) {
+  .nav-links a {
+    padding: 0.4rem 0.55rem;
+    font-size: 0.87rem;
+  }
+
+  .school-name {
+    font-size: 0.95rem;
+  }
+
+  .school-logo {
+    width: 38px;
+    height: 38px;
+  }
 }
