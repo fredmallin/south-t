@@ -282,7 +282,7 @@ export default function AdminManagement() {
           style={{ fontSize: 14, marginBottom: 8, display: "block" }}
         />
         {uploading && (
-          <p style={{ color: "#1a7c3e", fontSize: 13, marginBottom: 8 }}>⏳ Uploading photo...</p>
+          <p style={{ color: "#1a7c3e", fontSize: 13, marginBottom: 8 }}>Uploading photo...</p>
         )}
         {form.imageUrl && !uploading && (
           <div style={{ marginBottom: 12 }}>
