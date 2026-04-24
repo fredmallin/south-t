@@ -1189,34 +1189,150 @@ body {
   position: relative;
   z-index: 2;
 }
-.management-section {
-  padding: 40px 20px;
-  max-width: 100%;   /* was 900px */
+/* ===== MANAGEMENT PAGE ===== */
+.management-page {
+  display: block;
   width: 100%;
-  box-sizing: border-box;
-  margin: auto;
-}
-.management-section h2 {
-  text-align: center;
-  margin-bottom: 20px;
 }
 
-.management-card {
-  background: #f9f9f9;
-  padding: 20px;
-  margin: 20px 0;
-  border-left: 5px solid #2a6f97;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+.management-section {
+  padding: 70px 40px;
+  background: #f8f8f8;
+  width: 100%;
+  box-sizing: border-box;
 }
+
+.management-section h2 {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.management-section h2::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: #653115;
+  margin: 12px auto 0;
+  border-radius: 2px;
+}
+
+.management-intro {
+  text-align: center;
+  font-size: 1rem;
+  color: #666;
+  max-width: 700px;
+  margin: 0 auto 50px;
+  line-height: 1.7;
+}
+
+/* 3-column grid */
+.management-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Card */
+.management-card {
+  background: #ececec;
+  border-radius: 18px;
+  border: none;
+  box-shadow: none;
+  padding: 36px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.management-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
+}
+
 .management-image {
-  width: 120px;
-  height: 120px;
+  width: 125px;
+  height: 125px;
   object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 15px;
-  border: 3px solid #2a6f97;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  border: 3px solid #bbb;
+}
+
+/* Name */
+.management-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Role — bold label */
+.management-role {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #653115;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+/* Description */
+.management-desc {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Contact link */
+.management-card a {
+  color: #2a6f97;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 8px;
+  transition: color 0.2s;
+}
+
+.management-card a:hover {
+  color: #1a4f6e;
+  text-decoration: underline;
+}
+
+/* ── Responsive ── */
+@media (max-width: 960px) {
+  .management-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 580px) {
+  .management-section {
+    padding: 50px 20px;
+  }
+
+  .management-container {
+    grid-template-columns: 1fr;
+  }
+
+  .management-card {
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
+  .management-section h2 {
+    font-size: 1.7rem;
+  }
 }
 
 .contact-section {

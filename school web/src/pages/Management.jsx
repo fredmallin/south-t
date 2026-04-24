@@ -69,25 +69,28 @@ function SchoolManagement() {
       </section>
 
       <section className="management-section">
-        <h2>School Management</h2>
-        <p className="intro">
-          South Tetu Girl's High School is guided by a strong leadership team that
-          works tirelessly to ensure academic excellence, discipline, and holistic growth.
-        </p>
+  <h2>School Management</h2>
+  <p className="management-intro">
+    South Tetu Girl's High School is guided by a strong leadership team that
+    works tirelessly to ensure academic excellence, discipline, and holistic growth.
+  </p>
 
-        {displayStaff.map((s, i) => (
-          <div className="management-card" key={s.id || i}>
-            <img
-              src={s.imageUrl || "/images/principal south.png"}
-              alt={s.name}
-              className="management-image"
-            />
-            <h3>{s.title} {s.name}</h3>
-            <p><strong>{s.role}</strong></p>
-            <p>{s.description}</p>
-          </div>
-        ))}
-      </section>
+  <div className="management-container">  {/* ← ADD THIS WRAPPER */}
+    {displayStaff.map((s, i) => (
+      <div className="management-card" key={s.id || i}>
+        <img
+          src={s.imageUrl || "/images/principal south.png"}
+          alt={s.name}
+          className="management-image"
+        />
+        <h3>{s.title} {s.name}</h3>
+        <p className="management-role">{s.role}</p>
+        <p className="management-desc">{s.description}</p>
+        <a href="/contact">Contact Us</a>
+      </div>
+    ))}
+  </div>
+</section>
     </div>
   );
 }
