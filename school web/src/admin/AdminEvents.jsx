@@ -218,7 +218,7 @@ export default function AdminEvents() {
             </button>
 
             {heroUploading && (
-              <p style={{ color: "#1a7c3e", fontSize: 13, margin: "0 0 6px" }}>⏳ Uploading...</p>
+              <p style={{ color: "#1a7c3e", fontSize: 13, margin: "0 0 6px" }}>Uploading...</p>
             )}
 
             {hero.heroImage && !heroUploading && (
