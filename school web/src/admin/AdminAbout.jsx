@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { doc, getDoc, setDoc, collection, getDocs, addDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
-const CLOUDINARY_URL    = "https://api.cloudinary.com/v1_1/dwe1cwhgj/image/upload"; // ← replace
+const CLOUDINARY_URL    = "https://api.cloudinary.com/v1_1/dwe1cwhgj/image/upload"; 
 const CLOUDINARY_PRESET = "freddy"; // ← replace
 
 const DEFAULT_TEXT = {
