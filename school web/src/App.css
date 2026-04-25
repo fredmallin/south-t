@@ -1464,7 +1464,6 @@ body {
   transition: opacity 1s ease-out, transform 1s ease-out;
 }
 
-/* Active state: visible */
 .scroll-fade.active {
   opacity: 1;
   transform: translateY(0);
