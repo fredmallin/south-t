@@ -1491,8 +1491,6 @@ body {
   overflow: hidden;
 }
 
-
-/* Hero content on top of overlay */
 .events-hero .hero-content {
   position: relative;
   z-index: 2;
