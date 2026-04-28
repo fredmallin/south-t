@@ -8,8 +8,8 @@ import {
 import { db } from "../firebase";
 
 const DEFAULT_FORMS = [
-  "Form One",
-  "Form Two",
+  "Grade 10",
+  "Grade 11",
   "Form Three",
   "Form Four"
 ];
