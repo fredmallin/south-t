@@ -1508,7 +1508,7 @@ body {
   margin: auto;
 }
 
-/* 
+/* section titles */
 .events-section {
   margin: 50px auto;
   width: 100%;           
@@ -1622,7 +1622,6 @@ body {
 }
 /* 📱 Mobile responsiveness fixes */
 @media (max-width: 768px) {
-  /* Values section */
   .values-grid {
     grid-template-columns: 1fr;  
     padding: 0 10px;
