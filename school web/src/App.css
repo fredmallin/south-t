@@ -1912,7 +1912,7 @@ body {
   cursor: pointer;
 }
 
-/* 🔥 Card hover effect */
+/* Card hover effect */
 .value-card:hover {
   transform: translateY(-8px) scale(1.03);
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.18);
