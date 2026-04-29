@@ -1923,7 +1923,7 @@ body {
   transition: transform 0.3s ease;
 }
 
-/* 🔥 JINGLE ON HOVER */
+/* JINGLE ON HOVER */
 .value-card:hover .value-icon {
   animation: jingle 0.6s ease infinite;
 }
